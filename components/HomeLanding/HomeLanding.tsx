@@ -1,6 +1,7 @@
 "use client";
 import React, { Suspense, useEffect, useState, useRef } from "react";
 import { useRouter } from "next/navigation";
+import {DetectLoad} from "@/tool/DetectLoad/DetectLoad";
 import Image from "next/image";
 import * as THREE from "three";
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
@@ -31,8 +32,8 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet";
 
-const isGithubActions = process.env.GITHUB_ACTIONS || false;
-const baseurl = isGithubActions? "./":"/";
+const isGithubActions = process.env.GITHUB_ACTIONS
+export const baseurl = isGithubActions ? "./" : "/";
 
 export default function HomeLanding() {
   return (
@@ -648,7 +649,7 @@ export const Container3D = () => {
   const mixerRef = useRef<THREE.AnimationMixer | null>(null); // Ref with a type for mixer
 
   // 3D Model Function
-  const loadModel = async () => {
+  const loadModel = () => {
     const scene = new THREE.Scene();
     const loader = new GLTFLoader();
     const renderer = new THREE.WebGLRenderer({ alpha: true });
@@ -770,7 +771,7 @@ export const Container3D = () => {
       },
     ];
 
-    const setCamera = async () => {
+    const setCamera = () => {
       desktop = window.matchMedia("(min-width: 1024px)").matches;
       desktop_portrait = window.matchMedia(
         "(min-width: 1024px) and (orientation:portrait)"
@@ -832,7 +833,7 @@ export const Container3D = () => {
       }
     };
 
-    await setCamera();
+    setCamera();
 
     if (!camera) return;
     camera.position.z = 15;
@@ -927,10 +928,7 @@ export const Container3D = () => {
   };
 
   useEffect(() => {
-    if (typeof window == "undefined") return;
-    setTimeout(() => {
-      loadModel();
-    }, 2000);
+    DetectLoad(window, loadModel);
   }, []);
 
   // Reload The Page On Window Resize
