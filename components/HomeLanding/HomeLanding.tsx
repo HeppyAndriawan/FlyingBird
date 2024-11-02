@@ -1142,7 +1142,7 @@ export const Container3DNew = () => {
     scene.add(ambientLight, topLight);
     topLight.position.set(500, 500, 500);
 
-    loader.load("/asset/lowpoly_humming-bird_animated.glb", (gltf) => {
+    loader.load(`${baseurl}asset/lowpoly_humming-bird_animated.glb`, (gltf) => {
       birdRef.current = gltf.scene;
       scene.add(birdRef.current);
 
