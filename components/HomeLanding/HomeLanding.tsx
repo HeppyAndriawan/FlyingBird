@@ -912,7 +912,10 @@ export const Container3D = () => {
         });
       }
     };
-    const handleScroll = () => requestAnimationFrame(modelMove);
+    const handleScroll = (e:Event) => {
+      e.preventDefault()
+      requestAnimationFrame(modelMove);
+    }
     window.addEventListener("scroll", handleScroll);
 
     // Handle resizing and reload page after resizing stops
