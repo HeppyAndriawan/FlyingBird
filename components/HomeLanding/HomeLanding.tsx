@@ -31,6 +31,8 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet";
 
+const baseurl = "/";
+
 export default function HomeLanding() {
   return (
     <div className="w-full md:container md:mx-auto sm:mx-0 xl:p-0 md:p-0 2xl:px-[5%] lg:px-[5%] sm:px-[5%]">
@@ -197,7 +199,7 @@ export const Section01 = () => {
         <div className="flex items-center space-x-2 mt-3">
           <Suspense>
             <Image
-              src="./asset/play_video.jpg"
+              src={`${baseurl}asset/play_video.jpg`}
               width={100}
               height={100}
               alt="Person smiling"
@@ -221,7 +223,7 @@ export const Section01 = () => {
         <div className="absolute top-0 left-0 w-full h-full"></div>
         <Suspense>
           <Image
-            src="./asset/Artboard_3.png"
+            src={`${baseurl}asset/Artboard_3.png`}
             width={300}
             height={600}
             alt="Mobile application screenshot"
@@ -242,7 +244,7 @@ export const Section02 = () => {
       <div className="md:w-1/2 sm:w-full">
         <Suspense>
           <Image
-            src="./asset/Artboard_2.png"
+            src={`${baseurl}asset/Artboard_2.png`}
             width={300}
             height={600}
             alt="Mobile application screenshot"
@@ -269,7 +271,7 @@ export const Section02 = () => {
           <div className="lg:w-1/2 lgp:w-full md:w-full sm:w-full bg-gray-100 p-4 rounded">
             <Suspense>
               <Image
-                src="./asset/donating.jpg"
+                src={`${baseurl}asset/donating.jpg`}
                 width={2121}
                 height={1408}
                 alt="Interest rate comparison"
@@ -303,23 +305,23 @@ export const Section03 = () => {
   // Carousel Data
   const carouselData = [
     {
-      image: "./asset/carousel/captcha-01.jpg",
+      image: `${baseurl}asset/carousel/captcha-01.jpg`,
       altText: "Image 01",
     },
     {
-      image: "./asset/carousel/captcha-02.jpg",
+      image: `${baseurl}asset/carousel/captcha-02.jpg`,
       altText: "Image 02",
     },
     {
-      image: "./asset/carousel/captcha-03.jpg",
+      image: `${baseurl}asset/carousel/captcha-03.jpg`,
       altText: "Image 03",
     },
     {
-      image: "./asset/carousel/captcha-04.jpg",
+      image: `${baseurl}asset/carousel/captcha-04.jpg`,
       altText: "Image 04",
     },
     {
-      image: "./asset/carousel/captcha-05.jpg",
+      image: `${baseurl}asset/carousel/captcha-05.jpg`,
       altText: "Image 05",
     },
   ];
@@ -379,7 +381,7 @@ export const Section03 = () => {
       <div className="md:w-1/2 sm:w-full">
         <Suspense>
           <Image
-            src="./asset/Artboard_1.png"
+            src={`${baseurl}asset/Artboard_1.png`}
             width={300}
             height={600}
             alt="Mobile application screenshot"
@@ -400,7 +402,7 @@ export const Section04 = () => {
       <div className="w-full h-fit absolute lg:bottom-[6%] lgp:bottom-[-10%] md:bottom-[-10%] left-[-1rem] right-0 z-0 md:block sm:hidden">
         <Suspense>
           <Image
-            src="./asset/Artboard_4.png"
+            src={`${baseurl}asset/Artboard_4.png`}
             width={1280}
             height={500}
             sizes="100%"
@@ -422,7 +424,7 @@ export const Section04 = () => {
               <div className="w-full bg-gray-100 p-4 rounded-lg">
                 <Suspense>
                   <Image
-                    src="./asset/p_bun.jpeg"
+                    src={`${baseurl}asset/p_bun.jpeg`}
                     width={200}
                     height={200}
                     alt="Interest rate comparison"
@@ -463,7 +465,7 @@ export const Section04 = () => {
               <div className="w-full bg-gray-100 p-4 rounded-lg">
                 <Suspense>
                   <Image
-                    src="./asset/kumai.jpg"
+                    src={`${baseurl}asset/kumai.jpg`}
                     width={200}
                     height={200}
                     alt="Interest rate comparison"
@@ -504,7 +506,7 @@ export const Section04 = () => {
               <div className="w-full bg-gray-100 p-4 rounded-lg">
                 <Suspense>
                   <Image
-                    src="./asset/camp_leakey.jpg"
+                    src={`${baseurl}asset/camp_leakey.jpg`}
                     width={200}
                     height={200}
                     alt="Interest rate comparison"
@@ -767,14 +769,16 @@ export const Container3D = () => {
     ];
 
     const setCamera = () => {
-      const screenSize = window.innerWidth;
-
-      desktop = screenSize >= 1024;
+      desktop = window.matchMedia("(min-width: 1024px)").matches;
       desktop_portrait = window.matchMedia(
         "(min-width: 1024px) and (orientation:portrait)"
       ).matches;
-      tablet = screenSize >= 768 && screenSize < 1024;
-      mobile = screenSize >= 320 && screenSize < 768;
+      tablet = window.matchMedia(
+        "(min-width: 768px) and (max-width: 1024px)"
+      ).matches;
+      mobile = window.matchMedia(
+        "(min-width: 320px) and (max-width: 768px)"
+      ).matches;
 
       // console.log(screenSize);
       // console.log(screenSize >= 320);
@@ -831,7 +835,7 @@ export const Container3D = () => {
     if (!camera) return;
     camera.position.z = 15;
     const element = document.getElementById("container3D");
-    loader.load("./asset/lowpoly_humming-bird_animated.glb", (gltf) => {
+    loader.load(`${baseurl}asset/lowpoly_humming-bird_animated.glb`, (gltf) => {
       birdRef.current = gltf.scene;
       scene.add(birdRef.current);
 
@@ -911,17 +915,18 @@ export const Container3D = () => {
       modelMove();
     });
 
-    // window.addEventListener("resize", () => {
-    //   setCamera();
-    //   if (!camera) return;
-    //   renderer.setSize(window.innerWidth, window.innerHeight);
-    //   camera.aspect = window.innerWidth / window.innerHeight;
-    //   camera.updateProjectionMatrix();
-    // });
+    window.addEventListener("resize", () => {
+      setCamera();
+      if (!camera) return;
+      renderer.setSize(window.innerWidth, window.innerHeight);
+      camera.aspect = window.innerWidth / window.innerHeight;
+      camera.updateProjectionMatrix();
+    });
   }, []);
 
   // Reload The Page On Window Resize
   useEffect(() => {
+    if (isready === true) return;
     if (typeof window === "undefined") return;
     window.scrollTo(0, 0);
     window.addEventListener("resize", () => {
