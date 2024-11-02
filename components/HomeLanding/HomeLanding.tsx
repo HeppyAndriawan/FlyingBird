@@ -1,7 +1,7 @@
 "use client";
 import React, { Suspense, useEffect, useState, useRef } from "react";
 import { useRouter } from "next/navigation";
-import {DetectLoad} from "@/tool/DetectLoad/DetectLoad";
+import { DetectLoad } from "@/tool/DetectLoad/DetectLoad";
 import Image from "next/image";
 import * as THREE from "three";
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
@@ -32,8 +32,12 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet";
 
-const isGithubActions = process.env.GITHUB_ACTIONS
-export const baseurl = isGithubActions ? "./" : "/";
+const isGithubActions = process.env.GITHUB_ACTIONS;
+export const baseurl = isGithubActions
+  ? "./"
+  : process.env.NODE_ENV === "development"
+  ? "/"
+  : "./";
 
 export default function HomeLanding() {
   return (
