@@ -41,7 +41,7 @@ export const baseurl = isGithubActions
 
 export default function HomeLanding() {
   return (
-    <div className="w-full md:container md:mx-auto sm:mx-0 xl:p-0 md:p-0 2xl:px-[5%] lg:px-[5%] sm:px-[5%]">
+    <div className="w-full md:container md:mx-auto sm:mx-0 xl:p-0 md:p-0 2xl:px-[5%] lg:px-[5%] sm:px-[5%] relative overflow-hidden">
       <div className="w-full h-fit flex flex-col justify-center bg-white text-gray-800 lg:px-0 md:px-4 pt-2">
         <Navigation />
       </div>

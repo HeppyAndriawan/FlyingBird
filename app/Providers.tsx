@@ -6,5 +6,9 @@ interface ProvidersProps {
 }
 
 export default function Providers({ children }: ProvidersProps) {
-  return <Suspense>{children}</Suspense>;
+  return (
+    <div className="w-full relative overflow-hidden">
+      <Suspense>{children}</Suspense>
+    </div>
+  );
 }
