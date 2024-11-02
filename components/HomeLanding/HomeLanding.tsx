@@ -39,7 +39,6 @@ export const baseurl = isGithubActions
   ? "/"
   : "./";
 
-  
 export default function HomeLanding() {
   return (
     <div className="w-full md:container md:mx-auto sm:mx-0 xl:p-0 md:p-0 2xl:px-[5%] lg:px-[5%] sm:px-[5%]">
@@ -63,23 +62,20 @@ export const Navigation = () => {
   // Detect Mobile
   const [isMobile, setisMobile] = useState<boolean>(false);
   useEffect(() => {
-    const mobile = window.innerWidth >= 320 && window.innerWidth < 768;
-    setisMobile(mobile);
+    const mobile = window.matchMedia(
+      "(min-width: 320px) and (max-width: 768px)"
+    ).matches;
+    switch (mobile) {
+      case true:
+        setisMobile(true);
+        break;
+      case false:
+        setisMobile(false);
+        break;
 
-    window.addEventListener("resize", () => {
-      const mobile = window.innerWidth >= 320 && window.innerWidth < 768;
-      switch (mobile) {
-        case true:
-          setisMobile(true);
-          break;
-        case false:
-          setisMobile(false);
-          break;
-
-        default:
-          break;
-      }
-    });
+      default:
+        break;
+    }
   }, []);
 
   // Contact us Data
@@ -922,11 +918,11 @@ export const Container3D = () => {
     // Handle resizing and reload page after resizing stops
     const handleResize = async () => {
       if (resizeTimeout.current) clearTimeout(resizeTimeout.current);
-     
-      await setCamera()
+
+      await setCamera();
       resizeTimeout.current = setTimeout(() => {
         window.location.reload();
-      }, 200); 
+      }, 200);
     };
 
     window.addEventListener("resize", handleResize);
@@ -938,7 +934,7 @@ export const Container3D = () => {
   };
 
   useEffect(() => {
-    loadModel()
+    loadModel();
     window.scrollTo(0, 0);
   }, []);
 
