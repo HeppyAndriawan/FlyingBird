@@ -911,13 +911,13 @@ export const Container3D = () => {
       modelMove();
     });
 
-    window.addEventListener("resize", () => {
-      setCamera();
-      if (!camera) return;
-      renderer.setSize(window.innerWidth, window.innerHeight);
-      camera.aspect = window.innerWidth / window.innerHeight;
-      camera.updateProjectionMatrix();
-    });
+    // window.addEventListener("resize", () => {
+    //   setCamera();
+    //   if (!camera) return;
+    //   renderer.setSize(window.innerWidth, window.innerHeight);
+    //   camera.aspect = window.innerWidth / window.innerHeight;
+    //   camera.updateProjectionMatrix();
+    // });
   }, []);
 
   // Reload The Page On Window Resize
