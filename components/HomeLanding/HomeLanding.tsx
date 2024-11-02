@@ -655,7 +655,7 @@ export const Container3D = () => {
   const resizeTimeout = useRef<NodeJS.Timeout | null>(null); // Timeout type for debouncing resize
 
   // 3D Model Function
-  const loadModel = () => {
+  const loadModel = async () => {
     const scene = new THREE.Scene();
     const loader = new GLTFLoader();
     const renderer = new THREE.WebGLRenderer({ alpha: true });
@@ -777,7 +777,7 @@ export const Container3D = () => {
       },
     ];
 
-    const setCamera = () => {
+    const setCamera = async () => {
       desktop = window.matchMedia("(min-width: 1024px)").matches;
       desktop_portrait = window.matchMedia(
         "(min-width: 1024px) and (orientation:portrait)"
@@ -836,7 +836,7 @@ export const Container3D = () => {
       }
     };
 
-    setCamera();
+    await setCamera();
 
     if (!camera) return;
     camera.position.z = 15;
@@ -920,12 +920,13 @@ export const Container3D = () => {
     window.addEventListener("scroll", handleScroll);
 
     // Handle resizing and reload page after resizing stops
-    const handleResize = () => {
+    const handleResize = async () => {
       if (resizeTimeout.current) clearTimeout(resizeTimeout.current);
-      window.scrollTo(0, 0);
+     
+      await setCamera()
       resizeTimeout.current = setTimeout(() => {
         window.location.reload();
-      }, 200); // Adjust the delay as needed
+      }, 200); 
     };
 
     window.addEventListener("resize", handleResize);
@@ -937,7 +938,8 @@ export const Container3D = () => {
   };
 
   useEffect(() => {
-    DetectLoad(window, loadModel);
+    loadModel()
+    window.scrollTo(0, 0);
   }, []);
 
   return (

@@ -17,6 +17,10 @@
   scroll-behavior: smooth;
 }
 
+body {               
+  overscroll-behavior: contain;
+}
+
 .nav-button {
   background-color: #f3f4f6; /* Soft grey */
   border-radius: 9999px;
