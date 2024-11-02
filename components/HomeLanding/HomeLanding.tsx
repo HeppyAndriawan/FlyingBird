@@ -646,7 +646,8 @@ export const Container3D = () => {
   const birdRef = useRef<THREE.Object3D | null>(null); // Ref with a type for bird
   const mixerRef = useRef<THREE.AnimationMixer | null>(null); // Ref with a type for mixer
 
-  useEffect(() => {
+  // 3D Model Function
+  const loadModel = async () => {
     const scene = new THREE.Scene();
     const loader = new GLTFLoader();
     const renderer = new THREE.WebGLRenderer({ alpha: true });
@@ -768,7 +769,7 @@ export const Container3D = () => {
       },
     ];
 
-    const setCamera = () => {
+    const setCamera = async () => {
       desktop = window.matchMedia("(min-width: 1024px)").matches;
       desktop_portrait = window.matchMedia(
         "(min-width: 1024px) and (orientation:portrait)"
@@ -830,7 +831,7 @@ export const Container3D = () => {
       }
     };
 
-    setCamera();
+    await setCamera();
 
     if (!camera) return;
     camera.position.z = 15;
@@ -922,6 +923,10 @@ export const Container3D = () => {
       camera.aspect = window.innerWidth / window.innerHeight;
       camera.updateProjectionMatrix();
     });
+  };
+
+  useEffect(() => {
+    loadModel()
   }, []);
 
   // Reload The Page On Window Resize
