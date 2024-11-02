@@ -39,6 +39,7 @@ export const baseurl = isGithubActions
   ? "/"
   : "./";
 
+  
 export default function HomeLanding() {
   return (
     <div className="w-full md:container md:mx-auto sm:mx-0 xl:p-0 md:p-0 2xl:px-[5%] lg:px-[5%] sm:px-[5%]">
@@ -648,9 +649,10 @@ export const Footer = () => {
 
 export const Container3D = () => {
   // render Model
-  const [isready, setisready] = useState<boolean>(false);
+  // const [isready, setisready] = useState<boolean>(false);
   const birdRef = useRef<THREE.Object3D | null>(null); // Ref with a type for bird
   const mixerRef = useRef<THREE.AnimationMixer | null>(null); // Ref with a type for mixer
+  const resizeTimeout = useRef<NodeJS.Timeout | null>(null); // Timeout type for debouncing resize
 
   // 3D Model Function
   const loadModel = () => {
@@ -803,7 +805,6 @@ export const Container3D = () => {
           0.1,
           1000
         );
-        setisready(true);
         return;
       }
       if (tablet) {
@@ -813,7 +814,7 @@ export const Container3D = () => {
           0.1,
           1000
         );
-        setisready(true);
+
         return;
       }
       if (desktop_portrait) {
@@ -823,7 +824,6 @@ export const Container3D = () => {
           0.1,
           1000
         );
-        setisready(true);
         return;
       }
       if (desktop) {
@@ -833,7 +833,6 @@ export const Container3D = () => {
           0.1,
           1000
         );
-        setisready(true);
       }
     };
 
@@ -917,33 +916,29 @@ export const Container3D = () => {
         });
       }
     };
-    window.addEventListener("scroll", () => {
-      if (!birdRef.current) return;
-      modelMove();
-    });
+    const handleScroll = () => requestAnimationFrame(modelMove);
+    window.addEventListener("scroll", handleScroll);
 
-    window.addEventListener("resize", () => {
-      setCamera();
-      if (!camera) return;
-      renderer.setSize(window.innerWidth, window.innerHeight);
-      camera.aspect = window.innerWidth / window.innerHeight;
-      camera.updateProjectionMatrix();
-    });
+    // Handle resizing and reload page after resizing stops
+    const handleResize = () => {
+      if (resizeTimeout.current) clearTimeout(resizeTimeout.current);
+      window.scrollTo(0, 0);
+      resizeTimeout.current = setTimeout(() => {
+        window.location.reload();
+      }, 200); // Adjust the delay as needed
+    };
+
+    window.addEventListener("resize", handleResize);
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+      window.removeEventListener("resize", handleResize);
+    };
   };
 
   useEffect(() => {
     DetectLoad(window, loadModel);
   }, []);
-
-  // Reload The Page On Window Resize
-  useEffect(() => {
-    if (isready === true) return;
-    if (typeof window === "undefined") return;
-    window.scrollTo(0, 0);
-    window.addEventListener("resize", () => {
-      window.location.reload();
-    });
-  }, [isready]);
 
   return (
     <div
