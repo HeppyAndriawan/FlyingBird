@@ -1,4 +1,4 @@
-import HomeLanding from "@/components/Home/HomeLanding";
+import HomeLanding from "../components/Home/HomeLanding";
 import { Fragment } from "react";
 
 
