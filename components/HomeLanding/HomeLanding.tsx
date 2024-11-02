@@ -1,7 +1,7 @@
 "use client";
 import React, { Suspense, useEffect, useState, useRef } from "react";
 import { useRouter } from "next/navigation";
-import { DetectLoad } from "@/tool/DetectLoad/DetectLoad";
+// import { DetectLoad } from "@/tool/DetectLoad/DetectLoad";
 import Image from "next/image";
 import * as THREE from "three";
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
