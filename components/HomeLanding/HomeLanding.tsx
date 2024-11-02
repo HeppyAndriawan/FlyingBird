@@ -51,7 +51,7 @@ export default function HomeLanding() {
         <Section03 />
         <Section04 />
         <Section05 />
-        <Container3D />
+        <Container3DNew />
         <Footer />
       </main>
     </div>
@@ -912,10 +912,10 @@ export const Container3D = () => {
         });
       }
     };
-    const handleScroll = (e:Event) => {
-      e.preventDefault()
+    const handleScroll = (e: Event) => {
+      e.preventDefault();
       requestAnimationFrame(modelMove);
-    }
+    };
     window.addEventListener("scroll", handleScroll);
 
     // Handle resizing and reload page after resizing stops
@@ -923,11 +923,318 @@ export const Container3D = () => {
       if (resizeTimeout.current) clearTimeout(resizeTimeout.current);
 
       await setCamera();
-      if (mobile === false) {
-        resizeTimeout.current = setTimeout(() => {
-          window.location.reload();
-        }, 200);
+      resizeTimeout.current = setTimeout(() => {
+        window.location.reload();
+      }, 200);
+    };
+
+    window.addEventListener("resize", handleResize);
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+      window.removeEventListener("resize", handleResize);
+    };
+  };
+
+  useEffect(() => {
+    loadModel();
+    window.scrollTo(0, 0);
+  }, []);
+
+  return (
+    <div
+      id="container3D"
+      className="fixed inset-0 z-50 pointer-events-none"
+    ></div>
+  );
+};
+
+export const Container3DNew = () => {
+  const birdRef = useRef<THREE.Object3D | null>(null);
+  const mixerRef = useRef<THREE.AnimationMixer | null>(null);
+  const resizeTimeout = useRef<NodeJS.Timeout | null>(null);
+  const cameraRef = useRef<THREE.PerspectiveCamera | null>(null);
+  const rendererRef = useRef<THREE.WebGLRenderer | null>(null);
+
+  const loadModel = async () => {
+    const scene = new THREE.Scene();
+    const loader = new GLTFLoader();
+    const renderer = new THREE.WebGLRenderer({ alpha: true });
+    const ambientLight = new THREE.AmbientLight(0xffffff, 1.3);
+    const topLight = new THREE.DirectionalLight(0xffffff, 1.3);
+    let camera: THREE.PerspectiveCamera;
+
+    // Screen
+    const desktop = window.matchMedia("(min-width: 1024px)").matches;
+    const desktop_portrait = window.matchMedia(
+      "(min-width: 1024px) and (orientation:portrait)"
+    ).matches;
+    const tablet = window.matchMedia(
+      "(min-width: 768px) and (max-width: 1024px)"
+    ).matches;
+    const mobile = window.matchMedia(
+      "(min-width: 320px) and (max-width: 768px)"
+    ).matches;
+
+    // Positions Object
+    const positionObject = [
+      {
+        id: "Section01",
+        position: { x: 2.5, y: 0.2, z: 0 },
+        rotation: { x: 0, y: -1, z: 0 },
+      },
+      {
+        id: "Section02",
+        position: { x: -3, y: 0, z: 0 },
+        rotation: { x: 1, y: -0.5, z: 0 },
+      },
+      {
+        id: "Section03",
+        position: { x: 2.7, y: 0, z: 0 },
+        rotation: { x: 0, y: 1, z: 0 },
+      },
+      {
+        id: "Section04",
+        position: { x: 1, y: -1, z: 0 },
+        rotation: { x: 0, y: -1, z: 0 },
+      },
+      {
+        id: "Section05",
+        position: { x: 2.5, y: 0.5, z: 0 },
+        rotation: { x: 0, y: -1, z: 0 },
+      },
+    ];
+    const positionObject_MD_Portrait = [
+      {
+        id: "Section01",
+        position: { x: 1.5, y: 3, z: 0 },
+        rotation: { x: 0, y: -1, z: 0 },
+      },
+      {
+        id: "Section02",
+        position: { x: -2, y: 0.5, z: 0 },
+        rotation: { x: 1, y: -0.5, z: 0 },
+      },
+      {
+        id: "Section03",
+        position: { x: 1.7, y: 1, z: 0 },
+        rotation: { x: 0, y: 1, z: 0 },
+      },
+      {
+        id: "Section04",
+        position: { x: 1, y: -0.5, z: 0 },
+        rotation: { x: 0, y: -1, z: 0 },
+      },
+      {
+        id: "Section05",
+        position: { x: 1.5, y: 1, z: 0 },
+        rotation: { x: 0, y: -1, z: 0 },
+      },
+    ];
+    const positionObject_MD = [
+      {
+        id: "Section01",
+        position: { x: 1.5, y: 3, z: 0 },
+        rotation: { x: 0, y: -1, z: 0 },
+      },
+      {
+        id: "Section02",
+        position: { x: -2, y: 0.5, z: 0 },
+        rotation: { x: 1, y: -0.5, z: 0 },
+      },
+      {
+        id: "Section03",
+        position: { x: 1.7, y: 1, z: 0 },
+        rotation: { x: 0, y: 1, z: 0 },
+      },
+      {
+        id: "Section04",
+        position: { x: 1, y: -0.5, z: 0 },
+        rotation: { x: 0, y: -1, z: 0 },
+      },
+      {
+        id: "Section05",
+        position: { x: 1.5, y: 1, z: 0 },
+        rotation: { x: 0, y: -1, z: 0 },
+      },
+    ];
+    const positionObject_SM = [
+      {
+        id: "Section01",
+        position: { x: 0, y: -2, z: 0 },
+        rotation: { x: 0, y: -1, z: 0 },
+      },
+      {
+        id: "Section02",
+        position: { x: 0, y: -4, z: 0 },
+        rotation: { x: -1, y: 3, z: 1 },
+      },
+      {
+        id: "Section03",
+        position: { x: 0, y: -3, z: 0 },
+        rotation: { x: 0, y: 1.5, z: 0 },
+      },
+      {
+        id: "Section04",
+        position: { x: 1.5, y: -1, z: 0 },
+        rotation: { x: 0, y: -1, z: 0 },
+      },
+      {
+        id: "Section05",
+        position: { x: 1.5, y: 0.5, z: 0 },
+        rotation: { x: 0, y: -1, z: 0 },
+      },
+    ];
+
+    const setCamera = async () => {
+      // Set Camera
+      if (mobile) {
+        camera = new THREE.PerspectiveCamera(
+          40,
+          window.innerWidth / window.innerHeight,
+          0.1,
+          1000
+        );
+        camera.position.z = 15;
+        cameraRef.current = camera;
+        return;
       }
+      if (tablet) {
+        camera = new THREE.PerspectiveCamera(
+          39,
+          window.innerWidth / window.innerHeight,
+          0.1,
+          1000
+        );
+        camera.position.z = 15;
+        cameraRef.current = camera;
+        return;
+      }
+      if (desktop_portrait) {
+        camera = new THREE.PerspectiveCamera(
+          40,
+          window.innerWidth / window.innerHeight,
+          0.1,
+          1000
+        );
+        camera.position.z = 15;
+        cameraRef.current = camera;
+        return;
+      }
+      if (desktop) {
+        camera = new THREE.PerspectiveCamera(
+          25,
+          window.innerWidth / window.innerHeight,
+          0.1,
+          1000
+        );
+        camera.position.z = 15;
+        cameraRef.current = camera;
+      }
+    };
+
+    setCamera();
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    const element = document.getElementById("container3D");
+    if (element) element.appendChild(renderer.domElement);
+
+    rendererRef.current = renderer;
+    scene.add(ambientLight, topLight);
+    topLight.position.set(500, 500, 500);
+
+    loader.load("/asset/lowpoly_humming-bird_animated.glb", (gltf) => {
+      birdRef.current = gltf.scene;
+      scene.add(birdRef.current);
+
+      mixerRef.current = new THREE.AnimationMixer(birdRef.current);
+      mixerRef.current.clipAction(gltf.animations[0]).play();
+      modelMove();
+    });
+
+    const animate = () => {
+      if (cameraRef.current) {
+        requestAnimationFrame(animate);
+        renderer.render(scene, cameraRef.current);
+        mixerRef.current?.update(0.02);
+      }
+    };
+    animate();
+
+    const modelMove = () => {
+      const section = document.querySelectorAll(".section");
+      let currentSection: string | undefined = undefined;
+
+      section.forEach((el) => {
+        const rect = el.getBoundingClientRect();
+        if (rect.top <= window.innerHeight / 2) {
+          currentSection = el.id;
+        }
+      });
+
+      const position3DModel = () => {
+        if (mobile) {
+          return positionObject_SM[positionActive];
+        }
+        if (tablet) {
+          return positionObject_MD[positionActive];
+        }
+        if (desktop_portrait) {
+          return positionObject_MD_Portrait[positionActive];
+        }
+        if (desktop) {
+          return positionObject[positionActive];
+        }
+      };
+
+      const positionActive = positionObject.findIndex(
+        (elm) => elm.id === currentSection
+      );
+
+      if (positionActive >= 0 && birdRef.current !== null) {
+        const newCordinate = position3DModel();
+
+        gsap.to(birdRef.current.position, {
+          y: newCordinate?.position.y,
+          x: newCordinate?.position.x,
+          z: newCordinate?.position.z,
+          duration: 1,
+          ease: "power1.out",
+        });
+
+        gsap.to(birdRef.current.rotation, {
+          y: newCordinate?.rotation.y,
+          x: newCordinate?.rotation.x,
+          z: newCordinate?.rotation.z,
+          duration: 1,
+          ease: "power1.out",
+        });
+      }
+    };
+
+    // Throttled scroll handler
+    let isScrolling = false;
+    const handleScroll = () => {
+      if (!isScrolling) {
+        isScrolling = true;
+        requestAnimationFrame(() => {
+          modelMove();
+          isScrolling = false;
+        });
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll);
+
+    // Debounced resize handler
+    const handleResize = () => {
+      if (resizeTimeout.current) clearTimeout(resizeTimeout.current);
+      resizeTimeout.current = setTimeout(() => {
+        if (cameraRef.current && rendererRef.current) {
+          cameraRef.current.aspect = window.innerWidth / window.innerHeight;
+          cameraRef.current.updateProjectionMatrix();
+          rendererRef.current.setSize(window.innerWidth, window.innerHeight);
+        }
+      }, 200);
     };
 
     window.addEventListener("resize", handleResize);
