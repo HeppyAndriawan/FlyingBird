@@ -920,9 +920,11 @@ export const Container3D = () => {
       if (resizeTimeout.current) clearTimeout(resizeTimeout.current);
 
       await setCamera();
-      resizeTimeout.current = setTimeout(() => {
-        window.location.reload();
-      }, 200);
+      if (mobile === false) {
+        resizeTimeout.current = setTimeout(() => {
+          window.location.reload();
+        }, 200);
+      }
     };
 
     window.addEventListener("resize", handleResize);
