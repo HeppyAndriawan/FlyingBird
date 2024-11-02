@@ -926,7 +926,8 @@ export const Container3D = () => {
   };
 
   useEffect(() => {
-    loadModel()
+    if (typeof window == "undefined") return;
+    loadModel();
   }, []);
 
   // Reload The Page On Window Resize
