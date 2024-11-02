@@ -1,10 +1,11 @@
 import HomeLanding from "@/components/Home/HomeLanding";
-import Providers from "./Providers";
+import { Fragment } from "react";
+
 
 export default function Home() {
   return (
-    <Providers>
+    <Fragment>
       <HomeLanding />
-    </Providers>
+    </Fragment>
   );
 }

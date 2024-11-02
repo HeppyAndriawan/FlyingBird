@@ -1,5 +1,5 @@
 "use client";
-import React, { Suspense, useEffect, useState } from "react";
+import React, { Suspense, useEffect, useState, useRef } from "react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import * as THREE from "three";
@@ -33,7 +33,7 @@ import {
 
 export default function HomeLanding() {
   return (
-    <div className="w-full md:container md:mx-auto sm:mx-0 xl:p-0 md:p-0 xl:px-[5%] lg:px-[5%] sm:px-[5%]">
+    <div className="w-full md:container md:mx-auto sm:mx-0 xl:p-0 md:p-0 2xl:px-[5%] lg:px-[5%] sm:px-[5%]">
       <div className="w-full h-fit flex flex-col justify-center bg-white text-gray-800 lg:px-0 md:px-4 pt-2">
         <Navigation />
       </div>
@@ -50,8 +50,7 @@ export default function HomeLanding() {
   );
 }
 
-const Navigation = () => {
-  
+export const Navigation = () => {
   // Detect Mobile
   const [isMobile, setisMobile] = useState<boolean>(false);
   useEffect(() => {
@@ -177,7 +176,7 @@ const Navigation = () => {
   );
 };
 
-const Section01 = () => {
+export const Section01 = () => {
   return (
     <section
       id="Section01"
@@ -234,7 +233,7 @@ const Section01 = () => {
   );
 };
 
-const Section02 = () => {
+export const Section02 = () => {
   return (
     <section
       id="Section02"
@@ -295,7 +294,7 @@ const Section02 = () => {
   );
 };
 
-const Section03 = () => {
+export const Section03 = () => {
   // Carousel Auto Play Function
   const plugin = React.useRef(
     Autoplay({ delay: 2000, stopOnInteraction: true })
@@ -392,7 +391,7 @@ const Section03 = () => {
   );
 };
 
-const Section04 = () => {
+export const Section04 = () => {
   return (
     <section
       id="Section04"
@@ -549,7 +548,7 @@ const Section04 = () => {
   );
 };
 
-const Section05 = () => {
+export const Section05 = () => {
   return (
     <section
       id="Section05"
@@ -572,7 +571,7 @@ const Section05 = () => {
   );
 };
 
-const Footer = () => {
+export const Footer = () => {
   const d = new Date();
   const year = d.getFullYear();
 
@@ -594,7 +593,9 @@ const Footer = () => {
   return (
     <footer className="w-full p-4 border-t border-gray-200">
       <div className="flex md:flex-row sm:flex-col md:justify-between  md:items-center">
-        <p className="text-gray-600 sm:text-center sm:mb-2">&copy; {year} Future Project</p>
+        <p className="text-gray-600 sm:text-center sm:mb-2">
+          &copy; {year} Future Project
+        </p>
         <div className="flex flex-row flex-wrap sm:justify-between items-center text-gray-600 sm:text-[14px]">
           <Dialog title="Copyright" dataList={copyright} space={true} />
           <span className="mx-6 md:block sm:hidden">|</span>
@@ -637,141 +638,141 @@ const Footer = () => {
   );
 };
 
-const Container3D = () => {
-  const router = useRouter();
-  const scene = new THREE.Scene();
-  let bird: THREE.Group<THREE.Object3DEventMap> | undefined = undefined;
-  let mixer: THREE.AnimationMixer  | undefined = undefined;
-  const loader = new GLTFLoader();
-  const renderer = new THREE.WebGLRenderer({ alpha: true });
-  const ambientLight = new THREE.AmbientLight(0xffffff, 1.3);
-  const topLight = new THREE.DirectionalLight(0xffffff, 1.3);
-
-  // Positions Object
-  const positionObject = [
-    {
-      id: "Section01",
-      position: { x: 2.5, y: 0.2, z: 0 },
-      rotation: { x: 0, y: -1, z: 0 },
-    },
-    {
-      id: "Section02",
-      position: { x: -3, y: 0, z: 0 },
-      rotation: { x: 1, y: -0.5, z: 0 },
-    },
-    {
-      id: "Section03",
-      position: { x: 2.7, y: 0, z: 0 },
-      rotation: { x: 0, y: 1, z: 0 },
-    },
-    {
-      id: "Section04",
-      position: { x: 1, y: -1, z: 0 },
-      rotation: { x: 0, y: -1, z: 0 },
-    },
-    {
-      id: "Section05",
-      position: { x: 2.5, y: 0.5, z: 0 },
-      rotation: { x: 0, y: -1, z: 0 },
-    },
-  ];
-  const positionObject_MD_Portrait = [
-    {
-      id: "Section01",
-      position: { x: 1.5, y: 3, z: 0 },
-      rotation: { x: 0, y: -1, z: 0 },
-    },
-    {
-      id: "Section02",
-      position: { x: -2, y: 0.5, z: 0 },
-      rotation: { x: 1, y: -0.5, z: 0 },
-    },
-    {
-      id: "Section03",
-      position: { x: 1.7, y: 1, z: 0 },
-      rotation: { x: 0, y: 1, z: 0 },
-    },
-    {
-      id: "Section04",
-      position: { x: 1, y: -0.5, z: 0 },
-      rotation: { x: 0, y: -1, z: 0 },
-    },
-    {
-      id: "Section05",
-      position: { x: 1.5, y: 1, z: 0 },
-      rotation: { x: 0, y: -1, z: 0 },
-    },
-  ];
-  const positionObject_MD = [
-    {
-      id: "Section01",
-      position: { x: 1.5, y: 3, z: 0 },
-      rotation: { x: 0, y: -1, z: 0 },
-    },
-    {
-      id: "Section02",
-      position: { x: -2, y: 0.5, z: 0 },
-      rotation: { x: 1, y: -0.5, z: 0 },
-    },
-    {
-      id: "Section03",
-      position: { x: 1.7, y: 1, z: 0 },
-      rotation: { x: 0, y: 1, z: 0 },
-    },
-    {
-      id: "Section04",
-      position: { x: 1, y: -0.5, z: 0 },
-      rotation: { x: 0, y: -1, z: 0 },
-    },
-    {
-      id: "Section05",
-      position: { x: 1.5, y: 1, z: 0 },
-      rotation: { x: 0, y: -1, z: 0 },
-    },
-  ];
-  const positionObject_SM = [
-    {
-      id: "Section01",
-      position: { x: 0, y: -2, z: 0 },
-      rotation: { x: 0, y: -1, z: 0 },
-    },
-    {
-      id: "Section02",
-      position: { x: 0, y: -4, z: 0 },
-      rotation: { x: -1, y: 3, z: 1 },
-    },
-    {
-      id: "Section03",
-      position: { x: 0, y: -3, z: 0 },
-      rotation: { x: 0, y: 1.5, z: 0 },
-    },
-    {
-      id: "Section04",
-      position: { x: 1.5, y: -1, z: 0 },
-      rotation: { x: 0, y: -1, z: 0 },
-    },
-    {
-      id: "Section05",
-      position: { x: 1.5, y: 0.5, z: 0 },
-      rotation: { x: 0, y: -1, z: 0 },
-    },
-  ];
-
+export const Container3D = () => {
   // render Model
   const [isready, setisready] = useState<boolean>(false);
+  const birdRef = useRef<THREE.Object3D | null>(null); // Ref with a type for bird
+  const mixerRef = useRef<THREE.AnimationMixer | null>(null); // Ref with a type for mixer
+
   useEffect(() => {
-    let camera: THREE.PerspectiveCamera;
+    const scene = new THREE.Scene();
+    const loader = new GLTFLoader();
+    const renderer = new THREE.WebGLRenderer({ alpha: true });
+    const ambientLight = new THREE.AmbientLight(0xffffff, 1.3);
+    const topLight = new THREE.DirectionalLight(0xffffff, 1.3);
+    let camera: THREE.PerspectiveCamera | undefined;
     let desktop: boolean;
-    let desktop_portrait:boolean
+    let desktop_portrait: boolean;
     let tablet: boolean;
     let mobile: boolean;
 
+    // Positions Object
+    const positionObject = [
+      {
+        id: "Section01",
+        position: { x: 2.5, y: 0.2, z: 0 },
+        rotation: { x: 0, y: -1, z: 0 },
+      },
+      {
+        id: "Section02",
+        position: { x: -3, y: 0, z: 0 },
+        rotation: { x: 1, y: -0.5, z: 0 },
+      },
+      {
+        id: "Section03",
+        position: { x: 2.7, y: 0, z: 0 },
+        rotation: { x: 0, y: 1, z: 0 },
+      },
+      {
+        id: "Section04",
+        position: { x: 1, y: -1, z: 0 },
+        rotation: { x: 0, y: -1, z: 0 },
+      },
+      {
+        id: "Section05",
+        position: { x: 2.5, y: 0.5, z: 0 },
+        rotation: { x: 0, y: -1, z: 0 },
+      },
+    ];
+    const positionObject_MD_Portrait = [
+      {
+        id: "Section01",
+        position: { x: 1.5, y: 3, z: 0 },
+        rotation: { x: 0, y: -1, z: 0 },
+      },
+      {
+        id: "Section02",
+        position: { x: -2, y: 0.5, z: 0 },
+        rotation: { x: 1, y: -0.5, z: 0 },
+      },
+      {
+        id: "Section03",
+        position: { x: 1.7, y: 1, z: 0 },
+        rotation: { x: 0, y: 1, z: 0 },
+      },
+      {
+        id: "Section04",
+        position: { x: 1, y: -0.5, z: 0 },
+        rotation: { x: 0, y: -1, z: 0 },
+      },
+      {
+        id: "Section05",
+        position: { x: 1.5, y: 1, z: 0 },
+        rotation: { x: 0, y: -1, z: 0 },
+      },
+    ];
+    const positionObject_MD = [
+      {
+        id: "Section01",
+        position: { x: 1.5, y: 3, z: 0 },
+        rotation: { x: 0, y: -1, z: 0 },
+      },
+      {
+        id: "Section02",
+        position: { x: -2, y: 0.5, z: 0 },
+        rotation: { x: 1, y: -0.5, z: 0 },
+      },
+      {
+        id: "Section03",
+        position: { x: 1.7, y: 1, z: 0 },
+        rotation: { x: 0, y: 1, z: 0 },
+      },
+      {
+        id: "Section04",
+        position: { x: 1, y: -0.5, z: 0 },
+        rotation: { x: 0, y: -1, z: 0 },
+      },
+      {
+        id: "Section05",
+        position: { x: 1.5, y: 1, z: 0 },
+        rotation: { x: 0, y: -1, z: 0 },
+      },
+    ];
+    const positionObject_SM = [
+      {
+        id: "Section01",
+        position: { x: 0, y: -2, z: 0 },
+        rotation: { x: 0, y: -1, z: 0 },
+      },
+      {
+        id: "Section02",
+        position: { x: 0, y: -4, z: 0 },
+        rotation: { x: -1, y: 3, z: 1 },
+      },
+      {
+        id: "Section03",
+        position: { x: 0, y: -3, z: 0 },
+        rotation: { x: 0, y: 1.5, z: 0 },
+      },
+      {
+        id: "Section04",
+        position: { x: 1.5, y: -1, z: 0 },
+        rotation: { x: 0, y: -1, z: 0 },
+      },
+      {
+        id: "Section05",
+        position: { x: 1.5, y: 0.5, z: 0 },
+        rotation: { x: 0, y: -1, z: 0 },
+      },
+    ];
 
     const setCamera = () => {
       const screenSize = window.innerWidth;
 
       desktop = screenSize >= 1024;
-      desktop_portrait = window.matchMedia('(min-width: 1024px) and (orientation:portrait)').matches;
+      desktop_portrait = window.matchMedia(
+        "(min-width: 1024px) and (orientation:portrait)"
+      ).matches;
       tablet = screenSize >= 768 && screenSize < 1024;
       mobile = screenSize >= 320 && screenSize < 768;
 
@@ -830,19 +831,14 @@ const Container3D = () => {
     if (!camera) return;
     camera.position.z = 15;
     const element = document.getElementById("container3D");
-    loader.load(
-      "/asset/lowpoly_humming-bird_animated.glb",
-      (gltf) => {
-        bird = gltf.scene;
-        scene.add(bird);
+    loader.load("/asset/lowpoly_humming-bird_animated.glb", (gltf) => {
+      birdRef.current = gltf.scene;
+      scene.add(birdRef.current);
 
-        mixer = new THREE.AnimationMixer(bird);
-        mixer.clipAction(gltf.animations[0]).play();
-        modelMove();
-      },
-      (xhr) => {},
-      (error) => {}
-    );
+      mixerRef.current = new THREE.AnimationMixer(birdRef.current);
+      mixerRef.current.clipAction(gltf.animations[0]).play();
+      modelMove();
+    });
     renderer.setSize(window.innerWidth, window.innerHeight);
     element?.appendChild(renderer.domElement);
 
@@ -852,9 +848,10 @@ const Container3D = () => {
 
     // Rendering Loop
     const rerender3D = () => {
+      if (!camera) return;
       requestAnimationFrame(rerender3D);
       renderer.render(scene, camera);
-      mixer?.update(0.02);
+      mixerRef.current?.update(0.02);
     };
     rerender3D();
 
@@ -862,7 +859,6 @@ const Container3D = () => {
     const modelMove = () => {
       const section = document.querySelectorAll(".section");
       let currentSection: string | undefined = undefined;
-      
 
       section.forEach((el) => {
         const rect = el.getBoundingClientRect();
@@ -890,10 +886,10 @@ const Container3D = () => {
         (elm) => elm.id === currentSection
       );
 
-      if (positionActive >= 0 && bird !== undefined) {
+      if (positionActive >= 0 && birdRef.current !== null) {
         const newCordinate = position3DModel();
 
-        gsap.to(bird.position, {
+        gsap.to(birdRef.current.position, {
           y: newCordinate?.position.y,
           x: newCordinate?.position.x,
           z: newCordinate?.position.z,
@@ -901,7 +897,7 @@ const Container3D = () => {
           ease: "power1.out",
         });
 
-        gsap.to(bird.rotation, {
+        gsap.to(birdRef.current.rotation, {
           y: newCordinate?.rotation.y,
           x: newCordinate?.rotation.x,
           z: newCordinate?.rotation.z,
@@ -911,20 +907,22 @@ const Container3D = () => {
       }
     };
     window.addEventListener("scroll", () => {
-      if (!bird) return;
+      if (!birdRef.current) return;
       modelMove();
     });
 
     window.addEventListener("resize", () => {
       setCamera();
+      if (!camera) return;
       renderer.setSize(window.innerWidth, window.innerHeight);
       camera.aspect = window.innerWidth / window.innerHeight;
       camera.updateProjectionMatrix();
     });
   }, []);
 
-  //Reload The Page On Window Resize
+  // Reload The Page On Window Resize
   useEffect(() => {
+    if (typeof window === "undefined") return;
     window.scrollTo(0, 0);
     window.addEventListener("resize", () => {
       window.location.reload();
@@ -948,7 +946,12 @@ type DialogProps = {
   space?: boolean;
 };
 
-const Dialog = ({ dataList, title, textBTNcolor, space }: DialogProps) => {
+export const Dialog = ({
+  dataList,
+  title,
+  textBTNcolor,
+  space,
+}: DialogProps) => {
   return (
     <AlertDialog>
       <AlertDialogTrigger asChild>
@@ -998,12 +1001,12 @@ type MobileNavigationProps = {
   }[];
   extraButton: JSX.Element;
 };
-const MobileNavigation = ({
+export const MobileNavigation = ({
   title,
   dataMenu,
   extraButton,
 }: MobileNavigationProps) => {
-  const router = useRouter()
+  const router = useRouter();
   const [open, setOpen] = React.useState(false);
 
   return (
@@ -1021,10 +1024,10 @@ const MobileNavigation = ({
                 key={index + list.title}
                 className="w-full text-lg hover:text-gray-600 font-bold border-b p-3"
                 onClick={() => {
-                  setOpen(false)
-                 
+                  setOpen(false);
+
                   setTimeout(() => {
-                    router.push(list.href)
+                    router.push(list.href);
                   }, 1000);
                 }}
               >
@@ -1032,7 +1035,11 @@ const MobileNavigation = ({
               </li>
             ))}
           </ul>
-          {extraButton && <div className="w-full absolute bottom-2 left-0 right-0 p-6">{extraButton}</div>}
+          {extraButton && (
+            <div className="w-full absolute bottom-2 left-0 right-0 p-6">
+              {extraButton}
+            </div>
+          )}
         </div>
       </SheetContent>
     </Sheet>
