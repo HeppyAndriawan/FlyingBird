@@ -31,7 +31,8 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet";
 
-const baseurl = "/";
+const isGithubActions = process.env.GITHUB_ACTIONS || false;
+const baseurl = isGithubActions? "./":"/";
 
 export default function HomeLanding() {
   return (
