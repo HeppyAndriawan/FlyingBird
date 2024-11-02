@@ -26,6 +26,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+      <meta
+        name="format-detection"
+        content="telephone=no, date=no, email=no, address=no"
+      />
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >

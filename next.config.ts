@@ -3,12 +3,15 @@ import type { NextConfig } from "next";
 const isGithubActions = process.env.GITHUB_ACTIONS || false;
 const repo = isGithubActions ? '/FlyingBird' : '';
 const outputDir = isGithubActions? 'export' : undefined;
+const path = process.env.NODE_ENV === "development"?  '' : repo;
+
+console.log(path);
 
 const nextConfig: NextConfig = {
   reactStrictMode: true,
   output: outputDir,
-  basePath: `${repo}`,
-  assetPrefix: `${repo}`,
+  basePath: `${path}`,
+  assetPrefix: `${path}`,
   images: {
     remotePatterns: [
       {
@@ -17,7 +20,7 @@ const nextConfig: NextConfig = {
       },
       {
         protocol: "https",
-        hostname: "heppyandriawan.github.io",
+        hostname: "heppyandriawan.github.io/FlyingBird",
       },
     ],
   },
